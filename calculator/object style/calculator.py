@@ -16,19 +16,13 @@ class InterfaceCli:
     def output(self) -> None:
         print("{}\n{}".format(self._postfix, self._result))
 
-    @set
-    def set_infix(self, infix: str):
-        self._infix = infix
-
     @property
     def get_infix(self):
         return self._infix
 
-    @set
     def set_postfix(self, postfix: str):
         self._postfix = postfix
 
-    @set
     def set_result(self, result: float):
         self._result = result
 
@@ -42,16 +36,21 @@ def weight(item):
 
 class Calculator:
 
-    def __init__(self):
+    def __init__(self, infix_to_list=None, infix=None, infix_list=None):
+        self._infix_to_list = infix_to_list
+        self._infix = infix
         self._result = None
-        self._infix_list = None
+        self._infix_list = infix_list
         self._postfix_list = None
 
-    @set
-    def set_infix(self, result: float):
-        self._result = result
+    @property
+    def get_infix_list(self):
+        return self._infix_list
 
-    def infix_to_list(self) -> List[str]:
+    def set_infix(self, _infix: str):
+        self._infix = _infix
+
+    def infix_to_list(self):
         infix = re.sub(re.compile(r'\s+'), '', self._infix)
         digit = []
         result = []
@@ -67,10 +66,10 @@ class Calculator:
             result.append("".join(digit))
         self._infix_list = result
 
-    def infix_to_postfix_list(self) -> List[str]:
+    def infix_to_postfix_list(self):
         stack = []
         result = []
-        for item in self._infix_to_list:
+        for item in self._infix_list:
             if item in "+-*/":
                 while stack and stack[-1] != "(" and weight(item) <= weight(stack[-1]):
                     result.append(stack.pop())
@@ -87,7 +86,7 @@ class Calculator:
                 result.append(float(item))
         while stack:
             result.append(stack.pop())
-        return result
+        self._postfix_list = result
 
     def postfix_calculate(self):
         stack = []
@@ -107,12 +106,13 @@ class Calculator:
         self._result = stack[0]
 
     @property
-    def get_posfix(self):
+    def get_postfix(self):
         return self._postfix_list
 
     @property
     def get_result(self):
         return self._result
+
 
 def main():
     interface_cli = InterfaceCli()
@@ -122,9 +122,10 @@ def main():
     calculator.infix_to_list()
     calculator.infix_to_postfix_list()
     calculator.postfix_calculate()
-    interface_cli.set_postfix(calculator.get_posfix)
+    interface_cli.set_postfix(calculator.get_postfix)
     interface_cli.set_result(calculator.get_result)
     interface_cli.output()
+
 
 if __name__ == '__main__':
     main()
