@@ -7,3 +7,6 @@ U
 -calculator/structural style/test_calculate.py,3/0/308a011ddd26de304de246157f661f95a7e70311
 Z
 *calculator/object style/test_calculator.py,1/6/161309a27d06a7409e814b0203eaa7bc33d8d49a
+:
+
+.gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
